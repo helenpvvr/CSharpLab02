@@ -37,45 +37,45 @@ namespace Lab_Pyvovar.Models
         {
         }
 
-        public string FirstName
+        internal string FirstName
         {
             get { return _firstName; }
             set { _firstName = value; }
         }
 
-        public string LastName {
+        internal string LastName {
             get { return _lastName; }
             set { _lastName = value; }
         }
 
-        public string Email
+        internal string Email
         {
             get { return _email; }
             set { _email = value; }
         }
 
-        public DateTime Birthday
+        internal DateTime Birthday
         {
             get { return _birthday; }
             set { _birthday = value; }
         }
 
-        public bool IsAdult
+        internal bool IsAdult
         {
             get { return _isAdult; }
         }
 
-        public string SunSign
+        internal string SunSign
         {
             get { return _sunSign; }
         }
 
-        public string ChineseSing
+        internal string ChineseSing
         {
             get { return _chineseSign; }
         }
 
-        public bool IsBirthday
+        internal bool IsBirthday
         {
             get { return _isBirthday; }
         }
