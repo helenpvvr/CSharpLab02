@@ -40,24 +40,24 @@ namespace Lab_Pyvovar.Models
         internal string FirstName
         {
             get { return _firstName; }
-            set { _firstName = value; }
+            private set { _firstName = value; }
         }
 
         internal string LastName {
             get { return _lastName; }
-            set { _lastName = value; }
+            private set { _lastName = value; }
         }
 
         internal string Email
         {
             get { return _email; }
-            set { _email = value; }
+            private set { _email = value; }
         }
 
         internal DateTime Birthday
         {
             get { return _birthday; }
-            set { _birthday = value; }
+            private set { _birthday = value; }
         }
 
         internal bool IsAdult

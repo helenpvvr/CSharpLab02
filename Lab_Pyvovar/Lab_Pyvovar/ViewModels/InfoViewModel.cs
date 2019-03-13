@@ -7,7 +7,6 @@ namespace Lab_Pyvovar.View
 {
     internal class InfoViewModel : BaseViewModel
     {
-        #region Fields
         private string _firstName;
         private string _lastName;
         private string _email;
@@ -17,16 +16,13 @@ namespace Lab_Pyvovar.View
         private string _chineseSign;
         private bool _isBirthday;
 
-        #region Commands
+        
         private RelayCommand<object> _backCommand;
-        #endregion
-        #endregion
 
-        #region Properties
         public string FirstName
         {
-            get { return _firstName = StationManager.CurrentPerson.FirstName; }
-            set
+            get { return _firstName; }
+            private set
             {
                 _firstName = value;
                 OnPropertyChanged();
@@ -36,7 +32,7 @@ namespace Lab_Pyvovar.View
         public string LastName
         {
             get { return _lastName; }
-            set
+            private set
             {
                 _lastName = value;
                 OnPropertyChanged();
@@ -46,7 +42,7 @@ namespace Lab_Pyvovar.View
         public string Email
         {
             get { return _email; }
-            set
+            private set
             {
                 _email = value;
                 OnPropertyChanged();
@@ -56,7 +52,7 @@ namespace Lab_Pyvovar.View
         public string Birthday
         {
             get { return _birthday; }
-            set
+            private set
             {
                 _birthday = value;
                 OnPropertyChanged();
@@ -66,7 +62,7 @@ namespace Lab_Pyvovar.View
         public bool IsAdult
         {
             get { return _isAdult; }
-            set
+            private set
             {
                 _isAdult = value;
                 OnPropertyChanged();
@@ -76,7 +72,7 @@ namespace Lab_Pyvovar.View
         public string SunSign
         {
             get { return _sunSign; }
-            set
+            private set
             {
                 _sunSign = value;
                 OnPropertyChanged();
@@ -86,7 +82,7 @@ namespace Lab_Pyvovar.View
         public string ChineseSign
         {
             get { return _chineseSign; }
-            set
+            private set
             {
                 _chineseSign = value;
                 OnPropertyChanged();
@@ -96,26 +92,17 @@ namespace Lab_Pyvovar.View
         public bool IsBirthday
         {
             get { return _isBirthday; }
-            set
+            private set
             {
                 _isBirthday = value;
                 OnPropertyChanged();
             }
         }
+        
 
-        #region Commands
-
-        public ICommand BackCommand
-        {
-            get
-            {
-                return _backCommand ?? (_backCommand = new RelayCommand<object>(
-                           BackImplementation));
-            }
-        }
-
-        #endregion
-        #endregion
+        public ICommand BackCommand =>
+            _backCommand ?? (_backCommand = new RelayCommand<object>(
+                BackImplementation));
 
         private void BackImplementation(object obj)
         {
