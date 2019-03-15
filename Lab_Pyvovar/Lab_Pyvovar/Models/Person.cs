@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Lab_Pyvovar.Exceptions;
 
 namespace Lab_Pyvovar.Models
 {
@@ -16,10 +18,10 @@ namespace Lab_Pyvovar.Models
 
         public Person(string firstName, string lastName, string email, DateTime birthday)
         {
-            _firstName = firstName;
-            _lastName = lastName;
-            _email = email;
-            _birthday = birthday;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Birthday = birthday;
 
             _isAdult = Birthday.Subtract(DateTime.Today.AddYears(-18)).Days <= 0;
             _sunSign = CalculateSunSing();
@@ -51,13 +53,23 @@ namespace Lab_Pyvovar.Models
         internal string Email
         {
             get { return _email; }
-            private set { _email = value; }
+            private set
+            {
+                if (!new EmailAddressAttribute().IsValid(value))
+                    throw new EmailException($"Email {value} is not valid");
+                _email = value;
+            }
         }
 
         internal DateTime Birthday
         {
             get { return _birthday; }
-            private set { _birthday = value; }
+            private set
+            {
+                if (!CorrectDate(value))
+                    throw new AgeException($"Date {value.ToShortDateString()} is not correct");
+                _birthday = value;
+            }
         }
 
         internal bool IsAdult
@@ -78,6 +90,12 @@ namespace Lab_Pyvovar.Models
         internal bool IsBirthday
         {
             get { return _isBirthday; }
+        }
+
+        private bool CorrectDate(DateTime birthday)
+        {
+            DateTime lastCorrectDate = DateTime.Today.AddYears(-135);
+            return birthday.Subtract(lastCorrectDate).Days >= 1 && birthday.Subtract(DateTime.Today).Days <= 0;
         }
 
         private string CalculateSunSing()

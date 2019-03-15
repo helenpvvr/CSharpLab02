@@ -65,6 +65,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ChineseSigns.cs" />
+    <Compile Include="Exceptions\AgeException.cs" />
+    <Compile Include="Exceptions\EmailException.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Tools\BaseViewModel.cs" />
     <Compile Include="Tools\ILoaderOwner.cs" />

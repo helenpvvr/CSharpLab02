@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Lab_Pyvovar.Exceptions;
 using Lab_Pyvovar.Models;
 using Lab_Pyvovar.Tools;
 using Lab_Pyvovar.Tools.Managers;
@@ -75,7 +76,7 @@ namespace Lab_Pyvovar.View
             get
             {
                 return _proceedCommand ?? (_proceedCommand = new RelayCommand<object>(
-                           EnteredInfoInplementation, CanSignInExecute));
+                           EnteredInfoImplementation, CanSignInExecute));
             }
         }
 
@@ -98,31 +99,25 @@ namespace Lab_Pyvovar.View
                    && _birthday != null;
         }
 
-        private bool CorrectDate(DateTime birthday)
+        private async void EnteredInfoImplementation(object obj)
         {
-            DateTime lastCorrectDate = DateTime.Today.AddYears(-135);
-            return birthday.Subtract(lastCorrectDate).Days >= 1 && birthday.Subtract(DateTime.Today).Days <= 0;
-        }
-
-        private async void EnteredInfoInplementation(object obj)
-        {
-            if (!CorrectDate(Convert.ToDateTime(_birthday)))
-            {
-                MessageBox.Show("Wrong date. Your age can't be more than 135 and less than 0");
-                return;
-            }
             LoaderManeger.Instance.ShowLoader();
             var result = await Task.Run(() =>
             {
                 Thread.Sleep(100);
                 try
                 {
-                    if (!new EmailAddressAttribute().IsValid(_email))
-                    {
-                        MessageBox.Show($"Email {_email} is not valid.");
-                        return false;
-                    }
                     StationManager.CurrentPerson = new Person(FirstName, LastName, Email, Convert.ToDateTime(Birthday));
+                }
+                catch (EmailException emailEx)
+                {
+                    MessageBox.Show(emailEx.Message);
+                    return false;
+                }
+                catch (AgeException ageEx)
+                {
+                    MessageBox.Show(ageEx.Message);
+                    return false;
                 }
                 catch (Exception ex)
                 {
