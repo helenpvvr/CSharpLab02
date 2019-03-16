@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,7 +31,7 @@ namespace Lab_Pyvovar.View
             get { return _firstName; }
             set
             {
-                _firstName = value.Replace(" ", "");
+                _firstName = value;
                 OnPropertyChanged();
             }
         }
@@ -42,7 +41,7 @@ namespace Lab_Pyvovar.View
             get { return _lastName; }
             set
             {
-                _lastName = value.Replace(" ", "");
+                _lastName = value;
                 OnPropertyChanged();
             }
         }
@@ -109,19 +108,19 @@ namespace Lab_Pyvovar.View
                 {
                     StationManager.CurrentPerson = new Person(FirstName, LastName, Email, Convert.ToDateTime(Birthday));
                 }
-                catch (EmailException emailEx)
+                catch (NameException ex)
                 {
-                    MessageBox.Show(emailEx.Message);
+                    MessageBox.Show(ex.Message);
                     return false;
                 }
-                catch (AgeException ageEx)
+                catch (EmailException ex)
                 {
-                    MessageBox.Show(ageEx.Message);
+                    MessageBox.Show(ex.Message);
                     return false;
                 }
-                catch (Exception ex)
+                catch (AgeException ex)
                 {
-                    MessageBox.Show($"Sign In was failed. Reason:{Environment.NewLine} {ex.Message}");
+                    MessageBox.Show(ex.Message);
                     return false;
                 }
                 return true;

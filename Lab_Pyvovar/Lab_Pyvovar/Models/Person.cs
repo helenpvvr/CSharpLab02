@@ -42,12 +42,22 @@ namespace Lab_Pyvovar.Models
         internal string FirstName
         {
             get { return _firstName; }
-            private set { _firstName = value; }
+            private set
+            {
+                if (value.Contains(" "))
+                    throw new NameException("First name is not correct! It can not contain space");
+                _firstName = value;
+            }
         }
 
         internal string LastName {
             get { return _lastName; }
-            private set { _lastName = value; }
+            private set
+            {
+                if (value.Contains(" "))
+                    throw new NameException("Last name is not correct! It can not contain space");
+                _lastName = value;
+            }
         }
 
         internal string Email
@@ -67,7 +77,7 @@ namespace Lab_Pyvovar.Models
             private set
             {
                 if (!CorrectDate(value))
-                    throw new AgeException($"Date {value.ToShortDateString()} is not correct");
+                    throw new AgeException($"Date {value.ToShortDateString()} is not correct. Your age can not be greater than 135 and less than 0");
                 _birthday = value;
             }
         }

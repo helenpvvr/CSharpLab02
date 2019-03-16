@@ -7,6 +7,7 @@ namespace Lab_Pyvovar.View
 {
     internal class InfoViewModel : BaseViewModel
     {
+        #region Fields
         private string _firstName;
         private string _lastName;
         private string _email;
@@ -16,9 +17,13 @@ namespace Lab_Pyvovar.View
         private string _chineseSign;
         private bool _isBirthday;
 
-        
+        #region Commands
         private RelayCommand<object> _backCommand;
 
+        #endregion
+        #endregion
+
+        #region Properties
         public string FirstName
         {
             get { return _firstName; }
@@ -98,11 +103,14 @@ namespace Lab_Pyvovar.View
                 OnPropertyChanged();
             }
         }
-        
 
+        #region Commands
         public ICommand BackCommand =>
             _backCommand ?? (_backCommand = new RelayCommand<object>(
                 BackImplementation));
+
+        #endregion
+        #endregion
 
         private void BackImplementation(object obj)
         {
