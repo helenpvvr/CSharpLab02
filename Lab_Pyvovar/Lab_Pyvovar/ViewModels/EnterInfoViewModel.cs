@@ -31,7 +31,7 @@ namespace Lab_Pyvovar.View
             get { return _firstName; }
             set
             {
-                _firstName = value;
+                _firstName = value.Replace(" ", "");
                 OnPropertyChanged();
             }
         }
@@ -41,7 +41,7 @@ namespace Lab_Pyvovar.View
             get { return _lastName; }
             set
             {
-                _lastName = value;
+                _lastName = value.Replace(" ", "");
                 OnPropertyChanged();
             }
         }
@@ -100,18 +100,15 @@ namespace Lab_Pyvovar.View
 
         private async void EnteredInfoImplementation(object obj)
         {
-            LoaderManeger.Instance.ShowLoader();
+            LoaderManager.Instance.ShowLoader();
             var result = await Task.Run(() =>
             {
                 Thread.Sleep(100);
                 try
                 {
-                    StationManager.CurrentPerson = new Person(FirstName, LastName, Email, Convert.ToDateTime(Birthday));
-                }
-                catch (NameException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    return false;
+                    var person = new Person(FirstName, LastName, Email, Convert.ToDateTime(Birthday));
+                    StationManager.DataStorage.AddPerson(person);
+                    StationManager.CurrentPerson = person;
                 }
                 catch (EmailException ex)
                 {
@@ -123,13 +120,17 @@ namespace Lab_Pyvovar.View
                     MessageBox.Show(ex.Message);
                     return false;
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Sign Up failed fo user {_firstName}. Reason:{Environment.NewLine} {ex.Message}");
+                    return false;
+                }
                 return true;
             });
-            LoaderManeger.Instance.HideLoader();
+            LoaderManager.Instance.HideLoader();
             if (result)
             {
-                if (StationManager.CurrentPerson.IsBirthday)
-                    MessageBox.Show("Happy Birthday");
+                RefreshInfo();
                 NavigationManager.Instance.Navigate(ViewType.Info);
             }
         }
@@ -142,6 +143,18 @@ namespace Lab_Pyvovar.View
 
         internal override void RefreshInfo()
         {
+            if (StationManager.CurrentPerson != null)
+            {
+                FirstName = StationManager.CurrentPerson.FirstName;
+                LastName = StationManager.CurrentPerson.LastName;
+                Email = StationManager.CurrentPerson.Email;
+                Birthday = StationManager.CurrentPerson.Birthday;
+                return;
+            }
+            FirstName = "";
+            LastName = "";
+            Email = "";
+            Birthday = null;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Lab_Pyvovar.View
 
         internal MainWindowViewModel()
         {
-            LoaderManeger.Instance.Initialize(this);
+            LoaderManager.Instance.Initialize(this);
         }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;

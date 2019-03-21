@@ -1,132 +1,171 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using Lab_Pyvovar.Models;
 using Lab_Pyvovar.Tools;
 using Lab_Pyvovar.Tools.Managers;
 using Lab_Pyvovar.Tools.Navigation;
 
 namespace Lab_Pyvovar.View
 {
-    internal class InfoViewModel : BaseViewModel
+    internal class InfoViewModel : INotifyPropertyChanged
     {
-        #region Fields
-        private string _firstName;
-        private string _lastName;
-        private string _email;
-        private string _birthday;
-        private bool _isAdult;
-        private string _sunSign;
-        private string _chineseSign;
-        private bool _isBirthday;
+        private ObservableCollection<Person> _people;
+        private Person _selectedPerson;
+        private SortBy _sort;
 
-        #region Commands
-        private RelayCommand<object> _backCommand;
+        private RelayCommand<object> _addPersonCommand;
+        private RelayCommand<object> _editPersonCommand;
+        private RelayCommand<object> _removePersonCommand;
+        private RelayCommand<object> _saveCommand;
+        private RelayCommand<object> _sortCommand;
+        private RelayCommand<object> _radioButtonCommand;
 
-        #endregion
-        #endregion
-
-        #region Properties
-        public string FirstName
+        public ObservableCollection<Person> People
         {
-            get { return _firstName; }
+            get { return _people; }
             private set
             {
-                _firstName = value;
+                _people = value;
                 OnPropertyChanged();
             }
         }
 
-        public string LastName
+        // TODO public change or not?
+        public SortBy Sort
         {
-            get { return _lastName; }
+            get { return _sort; }
             private set
             {
-                _lastName = value;
+                _sort = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public Person SelectedPerson
+        {
+            get { return _selectedPerson; }
+            set
+            {
+                _selectedPerson = value;
                 OnPropertyChanged();
             }
         }
 
-        public string Email
+        public ICommand AddPersonCommand
         {
-            get { return _email; }
-            private set
+            get
             {
-                _email = value;
-                OnPropertyChanged();
+                return _addPersonCommand ?? (_addPersonCommand = new RelayCommand<object>(
+                           AddPersonImplementation)); // , CanSignInExecute
             }
         }
 
-        public string Birthday
+        public ICommand EditPersonCommand
         {
-            get { return _birthday; }
-            private set
+            get
             {
-                _birthday = value;
-                OnPropertyChanged();
+                return _editPersonCommand ?? (_editPersonCommand = new RelayCommand<object>(
+                           EditPersonImplementation)); // , CanSignInExecute
             }
         }
 
-        public bool IsAdult
+        public ICommand RemovePersonCommand
         {
-            get { return _isAdult; }
-            private set
+            get
             {
-                _isAdult = value;
-                OnPropertyChanged();
+                return _removePersonCommand ?? (_removePersonCommand = new RelayCommand<object>(
+                           RemovePersonImplementation)); // , CanSignInExecute
             }
         }
 
-        public string SunSign
+        public ICommand SaveCommand
         {
-            get { return _sunSign; }
-            private set
+            get
             {
-                _sunSign = value;
-                OnPropertyChanged();
+                return _saveCommand ?? (_saveCommand = new RelayCommand<object>(
+                           SaveImplementation)); // , CanSignInExecute
             }
         }
 
-        public string ChineseSign
+        public ICommand SortPersonCommand
         {
-            get { return _chineseSign; }
-            private set
+            get
             {
-                _chineseSign = value;
-                OnPropertyChanged();
+                return _sortCommand ?? (_sortCommand = new RelayCommand<object>(
+                           SortPersonImplementation)); // , CanSignInExecute
             }
         }
 
-        public bool IsBirthday
+        public ICommand RadioButtonCommand
         {
-            get { return _isBirthday; }
-            private set
+            get
             {
-                _isBirthday = value;
-                OnPropertyChanged();
+                return _radioButtonCommand ?? (_radioButtonCommand = new RelayCommand<object>(
+                           RadioButtonImplementation)); // , CanSignInExecute
             }
         }
 
-        #region Commands
-        public ICommand BackCommand =>
-            _backCommand ?? (_backCommand = new RelayCommand<object>(
-                BackImplementation));
-
-        #endregion
-        #endregion
-
-        private void BackImplementation(object obj)
+        private void AddPersonImplementation(Object obj)
         {
+            StationManager.CurrentPerson = null;
             NavigationManager.Instance.Navigate(ViewType.EnterInfo);
         }
 
-        internal override void RefreshInfo()
+        private void EditPersonImplementation(Object obj)
         {
-            FirstName = StationManager.CurrentPerson.FirstName;
-            LastName = StationManager.CurrentPerson.LastName;
-            Email = StationManager.CurrentPerson.Email;
-            Birthday = StationManager.CurrentPerson.Birthday.ToShortDateString();
-            IsAdult = StationManager.CurrentPerson.IsAdult;
-            SunSign = StationManager.CurrentPerson.SunSign;
-            ChineseSign = StationManager.CurrentPerson.ChineseSing;
-            IsBirthday = StationManager.CurrentPerson.IsBirthday;
+            StationManager.DataStorage.RemovePerson(SelectedPerson);
+            StationManager.CurrentPerson = SelectedPerson;
+            NavigationManager.Instance.Navigate(ViewType.EnterInfo);
+        }
+
+        private void RemovePersonImplementation(Object obj)
+        {
+            StationManager.DataStorage.RemovePerson(SelectedPerson);
+            RefreshInfo();
+        }
+
+        private void SaveImplementation(Object obj)
+        {
+            // SerializationManager.Serialize(_people, FileFolderHelper.StorageFilePath);
+            // TODO change here
+            MessageBox.Show("Changes saved successfully");
+        }
+
+        private void SortPersonImplementation(Object obj)
+        {
+            StationManager.DataStorage.UsersList = Sorting.ToSortBy(Sort);
+            RefreshInfo();
+        }
+
+        private void RadioButtonImplementation(Object obj)
+        {
+            Enum.TryParse(obj.ToString(), false, out _sort);
+        }
+
+        internal InfoViewModel()
+        {
+            _people = new ObservableCollection<Person>(StationManager.DataStorage.UsersList);
+        }
+
+        internal void RefreshInfo()
+        {
+            People = new ObservableCollection<Person>(StationManager.DataStorage.UsersList);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

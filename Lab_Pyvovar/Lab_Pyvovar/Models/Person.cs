@@ -4,8 +4,10 @@ using Lab_Pyvovar.Exceptions;
 
 namespace Lab_Pyvovar.Models
 {
+    [Serializable]
     internal class Person
     {
+        private Guid _guid;
         private string _firstName;
         private string _lastName;
         private string _email;
@@ -18,6 +20,7 @@ namespace Lab_Pyvovar.Models
 
         public Person(string firstName, string lastName, string email, DateTime birthday)
         {
+            _guid = Guid.NewGuid();
             FirstName = firstName;
             LastName = lastName;
             Email = email;
@@ -39,28 +42,24 @@ namespace Lab_Pyvovar.Models
         {
         }
 
-        internal string FirstName
+        public Guid Guid
+        {
+            get => _guid;
+            private set => _guid = value;
+        }
+
+        public string FirstName
         {
             get { return _firstName; }
-            private set
-            {
-                if (value.Contains(" "))
-                    throw new NameException("First name is not correct! It can not contain space");
-                _firstName = value;
-            }
+            private set { _firstName = value; }
         }
 
-        internal string LastName {
+        public string LastName {
             get { return _lastName; }
-            private set
-            {
-                if (value.Contains(" "))
-                    throw new NameException("Last name is not correct! It can not contain space");
-                _lastName = value;
-            }
+            private set { _lastName = value; }
         }
 
-        internal string Email
+        public string Email
         {
             get { return _email; }
             private set
@@ -71,7 +70,7 @@ namespace Lab_Pyvovar.Models
             }
         }
 
-        internal DateTime Birthday
+        public DateTime Birthday
         {
             get { return _birthday; }
             private set
@@ -82,22 +81,22 @@ namespace Lab_Pyvovar.Models
             }
         }
 
-        internal bool IsAdult
+        public bool IsAdult
         {
             get { return _isAdult; }
         }
 
-        internal string SunSign
+        public string SunSign
         {
             get { return _sunSign; }
         }
 
-        internal string ChineseSing
+        public string ChineseSing
         {
             get { return _chineseSign; }
         }
 
-        internal bool IsBirthday
+        public bool IsBirthday
         {
             get { return _isBirthday; }
         }
@@ -161,6 +160,11 @@ namespace Lab_Pyvovar.Models
                         return "Sagittarius";
                     return "Capricorn";
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{LastName} {FirstName}";
         }
     }
 }

@@ -2,12 +2,12 @@
 
 namespace Lab_Pyvovar.Tools.Managers
 {
-    internal class LoaderManeger
+    internal class LoaderManager
     {
         private static readonly object Locker = new object();
-        private static LoaderManeger _instance;
+        private static LoaderManager _instance;
 
-        internal static LoaderManeger Instance
+        internal static LoaderManager Instance
         {
             get
             {
@@ -15,14 +15,14 @@ namespace Lab_Pyvovar.Tools.Managers
                     return _instance;
                 lock (Locker)
                 {
-                    return _instance ?? (_instance = new LoaderManeger());
+                    return _instance ?? (_instance = new LoaderManager());
                 }
             }
         }
 
         private ILoaderOwner _loaderOwner;
 
-        private LoaderManeger()
+        private LoaderManager()
         {
 
         }
