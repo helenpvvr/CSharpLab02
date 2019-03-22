@@ -34,44 +34,47 @@
                 <StackPanel>
                     <Expander Header="FiltrationByFirstName" Margin="20, 0, 0, 0">
                         <StackPanel>
-                            <TextBox></TextBox>
+                            <TextBox Text="{Binding FiltrationByFirstName, Mode=TwoWay}"></TextBox>
                         </StackPanel>
                     </Expander>
                     <Expander Header="FiltrationByLastName" Margin="20, 0, 0, 0">
                         <StackPanel>
-                            <TextBox></TextBox>
+                            <TextBox Text="{Binding FiltrationByLastName, Mode=TwoWay}"></TextBox>
                         </StackPanel>
                     </Expander>
                     <Expander Header="Filtration By Email" Margin="20, 0, 0, 0">
                         <StackPanel>
-                            <TextBox></TextBox>
+                            <TextBox Text="{Binding FiltrationByEmail, Mode=TwoWay}"></TextBox>
                         </StackPanel>
                     </Expander>
                     <Expander Header="Filtration By Birthday" Margin="20, 0, 0, 0">
                         <StackPanel>
-                            <DatePicker IsDropDownOpen="False" SelectedDateFormat="Short" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" SelectedDate="{Binding FilterationByBirthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Content="Filter tha date from"></Label>
+                            <DatePicker IsDropDownOpen="False" SelectedDateFormat="Short" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" SelectedDate="{Binding FiltrationByBirthdayFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Content="Filter tha date to"></Label>
+                            <DatePicker IsDropDownOpen="False" SelectedDateFormat="Short" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" SelectedDate="{Binding FiltrationByBirthdayTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </Expander>
                     <Expander Header="Filtration By IsAdult" Margin="20, 0, 0, 0">
                         <StackPanel Margin="10, 0, 0, 0">
-                            <RadioButton GroupName="FiltrationByIsAdult" Content="Yes"/>
-                            <RadioButton GroupName="FiltrationByIsAdult" Content="No"/>
-                            <RadioButton GroupName="FiltrationByIsAdult" Content="Nothing"/>
+                            <RadioButton GroupName="FiltrationByIsAdult" Content="Yes" Command="{Binding FilterIsAdultCommand}" CommandParameter="Yes"/>
+                            <RadioButton GroupName="FiltrationByIsAdult" Content="No" Command="{Binding FilterIsAdultCommand}" CommandParameter="No"/>
                         </StackPanel>
                     </Expander>
                     <Expander Header="Filtration By Sun Sign" Margin="20, 0, 0, 0">
                         <StackPanel>
+                            <TextBox Text="{Binding FiltrationBySunSign, Mode=TwoWay}"></TextBox>
                         </StackPanel>
                     </Expander>
                     <Expander Header="Filtration By Chinese Sign" Margin="20, 0, 0, 0">
                         <StackPanel>
+                            <TextBox Text="{Binding FiltrationByChineseSign, Mode=TwoWay}"></TextBox>
                         </StackPanel>
                     </Expander>
                     <Expander Header="Filtration By IsBirthday" Margin="20, 0, 0, 0">
                         <StackPanel Margin="10, 0, 0, 0">
-                            <RadioButton GroupName="FiltrationByIsBirthday" Content="Yes"/>
-                            <RadioButton GroupName="FiltrationByIsBirthday" Content="No"/>
-                            <RadioButton GroupName="FiltrationByIsBirthday" Content="Nothing"/>
+                            <RadioButton GroupName="FiltrationByIsBirthday" Content="Yes" Command="{Binding FilterIsBirthdayCommand}" CommandParameter="Yes"/>
+                            <RadioButton GroupName="FiltrationByIsBirthday" Content="No" Command="{Binding FilterIsBirthdayCommand}" CommandParameter="No"/>
                         </StackPanel>
                     </Expander>
                     <Button Content="Filter" Command="{Binding FilterPersonCommand}" Margin="30, 5, 30, 5"/>

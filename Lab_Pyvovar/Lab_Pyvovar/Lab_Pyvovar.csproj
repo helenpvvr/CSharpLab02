@@ -67,6 +67,7 @@
     <Compile Include="ChineseSigns.cs" />
     <Compile Include="Exceptions\AgeException.cs" />
     <Compile Include="Exceptions\EmailException.cs" />
+    <Compile Include="Filter\Filtration.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Sorting\Sorting.cs" />
     <Compile Include="Sorting\SortBy.cs" />

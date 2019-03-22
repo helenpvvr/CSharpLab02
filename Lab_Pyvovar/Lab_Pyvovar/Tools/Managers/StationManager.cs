@@ -21,6 +21,8 @@ namespace Lab_Pyvovar.Tools.Managers
         internal static void Initialize(IDataStorage dataStorage)
         {
             _dataStorage = dataStorage;
+            if (_dataStorage.UsersList.Count == 0)
+                GenerateRandomPeople();
         }
 
         internal static void CloseApp()
@@ -28,6 +30,42 @@ namespace Lab_Pyvovar.Tools.Managers
             //MessageBox.Show("Close Window");
             //StopThreads?.Invoke();
             Environment.Exit(1);
+        }
+
+        private static void GenerateRandomPeople()
+        {
+            String[] firstNames =
+            {
+                "Amelia", "Olivia", "Sophie", "Mia",  "Helen", "Ella", "Alice",
+                "Lucy", "Rosie", "Anna", "Sarah", "Oscar", "William", "Henry",
+                "Leo", "Max", "Harrison", "Jake", "David", "Tommy", "Frankie"
+            };
+            String[] lastNames =
+            {
+                "Smith", "Johnson", "Wilson", "Miller", "Davis", "Brown", "Jones",
+                "Williams", "Adams", "Green", "Baker", "Roberts", "Allen", "Parker"
+            };
+
+            Random random = new Random();
+            for (int i = 0; i < 50; i++)
+            {
+                String firstName = firstNames[random.Next(firstNames.Length)];
+                String lastName = lastNames[random.Next(lastNames.Length)];
+                String email = firstName + lastName + random.Next(1000) + "@gmail.com";
+                int year = random.Next(DateTime.Today.Year - 135, DateTime.Today.Year);
+                int month = random.Next(1, 13);
+                int day = random.Next(1, DateTime.DaysInMonth(year, month) + 1);
+                try
+                {
+                    Person person = new Person(firstName, lastName, email, new DateTime(year, month, day));
+                    DataStorage.AddPerson(person);
+                    CurrentPerson = person;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
         }
     }
 
