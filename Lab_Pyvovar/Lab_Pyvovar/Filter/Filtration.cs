@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lab_Pyvovar.Models;
-using Lab_Pyvovar.Tools.Managers;
 
 namespace Lab_Pyvovar.Filter
 {

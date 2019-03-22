@@ -4,17 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="600">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+             d:DesignHeight="450" d:DesignWidth="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             <Expander Header="Sortinging" Grid.Row="0" Grid.Column="0" Margin="10">
                 <StackPanel>
@@ -57,8 +57,7 @@
                     </Expander>
                     <Expander Header="Filtration By IsAdult" Margin="20, 0, 0, 0">
                         <StackPanel Margin="10, 0, 0, 0">
-                            <RadioButton GroupName="FiltrationByIsAdult" Content="Yes" Command="{Binding FilterIsAdultCommand}" CommandParameter="Yes"/>
-                            <RadioButton GroupName="FiltrationByIsAdult" Content="No" Command="{Binding FilterIsAdultCommand}" CommandParameter="No"/>
+                            <ListBox ItemsSource="{Binding FiltrationByIsAdultItems}"  SelectedIndex="{Binding SelectedIndexIsAdultFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBox>
                         </StackPanel>
                     </Expander>
                     <Expander Header="Filtration By Sun Sign" Margin="20, 0, 0, 0">
@@ -73,8 +72,7 @@
                     </Expander>
                     <Expander Header="Filtration By IsBirthday" Margin="20, 0, 0, 0">
                         <StackPanel Margin="10, 0, 0, 0">
-                            <RadioButton GroupName="FiltrationByIsBirthday" Content="Yes" Command="{Binding FilterIsBirthdayCommand}" CommandParameter="Yes"/>
-                            <RadioButton GroupName="FiltrationByIsBirthday" Content="No" Command="{Binding FilterIsBirthdayCommand}" CommandParameter="No"/>
+                            <ListBox ItemsSource="{Binding FiltrationByIsBirthdayItems}" SelectedIndex="{Binding SelectedIndexIsBirthdayFilter, Mode=TwoWay}"></ListBox>
                         </StackPanel>
                     </Expander>
                     <Button Content="Filter" Command="{Binding FilterPersonCommand}" Margin="30, 5, 30, 5"/>
@@ -86,16 +84,14 @@
                     <Button Content="Add person" Command="{Binding AddPersonCommand}" Margin="20, 5, 20, 5"/>
                     <Button Content="Edit person" Command="{Binding EditPersonCommand}" Margin="20, 5, 20, 5"/>
                     <Button Content="Remove person" Command="{Binding RemovePersonCommand}" Margin="20, 5, 20, 5"/>
-                    <Button Content="Save Changes" Command="{Binding SaveCommand}" Margin="20, 5, 20, 5"/>
                 </StackPanel>
             </Expander>
             <DataGrid ItemsSource="{Binding People, Mode=OneWay}" SelectedItem="{Binding SelectedPerson, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AutoGenerateColumns="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Person id" Binding="{Binding Guid}"></DataGridTextColumn>
                     <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"></DataGridTextColumn>
                     <DataGridTextColumn Header="E-mail" Binding="{Binding Email}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Birthday" Binding="{Binding Birthday}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Birthday" Binding="{Binding BirthdayDate}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Is adult" Binding="{Binding IsAdult}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Sun Sign" Binding="{Binding SunSign}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Chinese Sign" Binding="{Binding ChineseSing}"></DataGridTextColumn>

@@ -7,11 +7,11 @@ namespace Lab_Pyvovar.Models
     [Serializable]
     internal class Person
     {
-        private Guid _guid;
         private string _firstName;
         private string _lastName;
         private string _email;
         private DateTime _birthday;
+        private string _birthdayDate;
 
         private readonly bool _isAdult;
         private readonly string _sunSign;
@@ -20,12 +20,12 @@ namespace Lab_Pyvovar.Models
 
         public Person(string firstName, string lastName, string email, DateTime birthday)
         {
-            _guid = Guid.NewGuid();
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Birthday = birthday;
 
+            _birthdayDate = Birthday.ToShortDateString();
             _isAdult = Birthday.Subtract(DateTime.Today.AddYears(-18)).Days <= 0;
             _sunSign = CalculateSunSing();
             _chineseSign = Enum.GetName(typeof(ChineseSigns), Birthday.Year % 12);
@@ -40,12 +40,6 @@ namespace Lab_Pyvovar.Models
         public Person(string firstName, string lastName, DateTime birthday)
             : this(firstName, lastName, "", birthday)
         {
-        }
-
-        public Guid Guid
-        {
-            get => _guid;
-            private set => _guid = value;
         }
 
         public string FirstName
@@ -79,6 +73,11 @@ namespace Lab_Pyvovar.Models
                     throw new AgeException($"Date {value.ToShortDateString()} is not correct. Your age can not be greater than 135 and less than 0");
                 _birthday = value;
             }
+        }
+
+        public string BirthdayDate
+        {
+            get { return _birthdayDate; }
         }
 
         public bool IsAdult

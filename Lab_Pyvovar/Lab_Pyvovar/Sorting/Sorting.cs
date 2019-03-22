@@ -12,23 +12,23 @@ namespace Lab_Pyvovar
             switch (property)
             {
                 case SortBy.SortingByFirstName:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.FirstName).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.FirstName).ToList();
                 case SortBy.SortingByLastName:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.LastName).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.LastName).ToList();
                 case SortBy.SortingByEmail:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.Email).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.Email).ToList();
                 case SortBy.SortingByBirthday:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.Birthday).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.Birthday).ToList();
                 case SortBy.SortingByIsAdult:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.IsAdult).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.IsAdult).ToList();
                 case SortBy.SortingBySunSign:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.SunSign).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.SunSign).ToList();
                 case SortBy.SortingByChineseSign:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.ChineseSing).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.ChineseSing).ToList();
                 case SortBy.SortingByIsBirthday:
-                    return StationManager.DataStorage.UsersList.OrderBy(p => p.IsBirthday).ToList();
+                    return StationManager.DataStorage.PeopleList.OrderBy(p => p.IsBirthday).ToList();
                 default:
-                    return StationManager.DataStorage.UsersList;
+                    return StationManager.DataStorage.PeopleList;
             }
         }
     }

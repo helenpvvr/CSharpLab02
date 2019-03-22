@@ -21,7 +21,7 @@ namespace Lab_Pyvovar.Tools.Managers
         internal static void Initialize(IDataStorage dataStorage)
         {
             _dataStorage = dataStorage;
-            if (_dataStorage.UsersList.Count == 0)
+            if (_dataStorage.PeopleList.Count == 0)
                 GenerateRandomPeople();
         }
 
@@ -52,7 +52,7 @@ namespace Lab_Pyvovar.Tools.Managers
                 String firstName = firstNames[random.Next(firstNames.Length)];
                 String lastName = lastNames[random.Next(lastNames.Length)];
                 String email = firstName + lastName + random.Next(1000) + "@gmail.com";
-                int year = random.Next(DateTime.Today.Year - 135, DateTime.Today.Year);
+                int year = random.Next(DateTime.Today.Year - 134, DateTime.Today.Year);
                 int month = random.Next(1, 13);
                 int day = random.Next(1, DateTime.DaysInMonth(year, month) + 1);
                 try

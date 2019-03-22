@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Lab_Pyvovar.Filter;
 using Lab_Pyvovar.Models;
@@ -16,26 +18,26 @@ namespace Lab_Pyvovar.View
     {
         private ObservableCollection<Person> _people;
         private Person _selectedPerson;
-        private SortBy _sort;
+        private SortBy _sortValue;
 
         private string _filtrationByFirstName;
         private string _filtrationByLastName;
         private string _filtrationByEmail;
         private DateTime? _filtrationByBirthdayFrom;
         private DateTime? _filtrationByBirthdayTo;
-        private string _filtrationIsAdult;
         private string _filtrationBySunSign;
         private string _filtrationByChineseSign;
-        private string _filtrationIsBirthday;
+
+        private RadioButton[] _filtrationByIsBirthdayItems;
+        private int _selectedIndexIsBirthdayFilter;
+        private RadioButton[] _filtrationByIsAdultItems;
+        private int _selectedIndexIsAdultFilter;
 
         private RelayCommand<object> _addPersonCommand;
         private RelayCommand<object> _editPersonCommand;
         private RelayCommand<object> _removePersonCommand;
-        private RelayCommand<object> _saveCommand;
         private RelayCommand<object> _sortCommand;
         private RelayCommand<object> _radioButtonCommand;
-        private RelayCommand<object> _filterIsAdultCommand;
-        private RelayCommand<object> _filterIsBirthdayCommand;
         private RelayCommand<object> _filterPersonCommand;
         private RelayCommand<object> _clearFilterPersonCommand;
 
@@ -48,16 +50,10 @@ namespace Lab_Pyvovar.View
                 OnPropertyChanged();
             }
         }
-
-        // TODO public change or not?
-        public SortBy Sort
+        
+        private SortBy SortValue
         {
-            get { return _sort; }
-            private set
-            {
-                _sort = value;
-                OnPropertyChanged();
-            }
+            get { return _sortValue; }
         }
         
         public Person SelectedPerson
@@ -110,26 +106,6 @@ namespace Lab_Pyvovar.View
             }
         }
 
-        private string FiltrationIsAdult
-        {
-            get { return _filtrationIsAdult; }
-            set
-            {
-                _filtrationIsAdult = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string FiltrationIsBirthday
-        {
-            get { return _filtrationIsBirthday; }
-            set
-            {
-                _filtrationIsBirthday = value;
-                OnPropertyChanged();
-            }
-        }
-
         public DateTime? FiltrationByBirthdayTo
         {
             get { return _filtrationByBirthdayTo; }
@@ -160,12 +136,60 @@ namespace Lab_Pyvovar.View
             }
         }
 
+        public RadioButton[] FiltrationByIsBirthdayItems
+        {
+            get { return _filtrationByIsBirthdayItems; }
+            private set
+            {
+                _filtrationByIsBirthdayItems = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedIndexIsBirthdayFilter
+        {
+            get
+            {
+                return _selectedIndexIsBirthdayFilter = FiltrationByIsBirthdayItems[1].IsChecked != null && ((bool)FiltrationByIsBirthdayItems[1].IsChecked) ? 1
+                    : (FiltrationByIsBirthdayItems[0].IsChecked != null && ((bool)FiltrationByIsBirthdayItems[0].IsChecked) ? 0 : -1);
+            }
+            set
+            {
+                _selectedIndexIsBirthdayFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RadioButton[] FiltrationByIsAdultItems
+        {
+            get { return _filtrationByIsAdultItems; }
+            private set
+            {
+                _filtrationByIsAdultItems = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedIndexIsAdultFilter
+        {
+            get
+            {
+                return _selectedIndexIsAdultFilter = FiltrationByIsAdultItems[1].IsChecked != null && ((bool)FiltrationByIsAdultItems[1].IsChecked) ? 1
+                    : (FiltrationByIsAdultItems[0].IsChecked != null && ((bool)FiltrationByIsAdultItems[0].IsChecked) ? 0 : -1);
+            }
+            set
+            {
+                _selectedIndexIsAdultFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand AddPersonCommand
         {
             get
             {
                 return _addPersonCommand ?? (_addPersonCommand = new RelayCommand<object>(
-                           AddPersonImplementation)); // , CanSignInExecute
+                           AddPersonImplementation));
             }
         }
 
@@ -174,7 +198,7 @@ namespace Lab_Pyvovar.View
             get
             {
                 return _editPersonCommand ?? (_editPersonCommand = new RelayCommand<object>(
-                           EditPersonImplementation)); // , CanSignInExecute
+                           EditPersonImplementation));
             }
         }
 
@@ -183,16 +207,7 @@ namespace Lab_Pyvovar.View
             get
             {
                 return _removePersonCommand ?? (_removePersonCommand = new RelayCommand<object>(
-                           RemovePersonImplementation)); // , CanSignInExecute
-            }
-        }
-
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ?? (_saveCommand = new RelayCommand<object>(
-                           SaveImplementation)); // , CanSignInExecute
+                           RemovePersonImplementation));
             }
         }
 
@@ -201,7 +216,7 @@ namespace Lab_Pyvovar.View
             get
             {
                 return _sortCommand ?? (_sortCommand = new RelayCommand<object>(
-                           SortPersonImplementation)); // , CanSignInExecute
+                           SortPersonImplementation));
             }
         }
 
@@ -210,25 +225,7 @@ namespace Lab_Pyvovar.View
             get
             {
                 return _radioButtonCommand ?? (_radioButtonCommand = new RelayCommand<object>(
-                           RadioButtonImplementation)); // , CanSignInExecute
-            }
-        }
-
-        public ICommand FilterIsAdultCommand
-        {
-            get
-            {
-                return _filterIsAdultCommand ?? (_filterIsAdultCommand = new RelayCommand<object>(
-                           FilterIsAdultSelectedImplementation)); // , CanSignInExecute
-            }
-        }
-
-        public ICommand FilterIsBirthdayCommand
-        {
-            get
-            {
-                return _filterIsBirthdayCommand ?? (_filterIsBirthdayCommand = new RelayCommand<object>(
-                           FilterIsBirthdaySelectedImplementation)); // , CanSignInExecute
+                           RadioButtonImplementation));
             }
         }
 
@@ -237,7 +234,7 @@ namespace Lab_Pyvovar.View
             get
             {
                 return _filterPersonCommand ?? (_filterPersonCommand = new RelayCommand<object>(
-                           FilterImplementation)); // , CanSignInExecute
+                           FilterImplementation));
             }
         }
 
@@ -246,7 +243,7 @@ namespace Lab_Pyvovar.View
             get
             {
                 return _clearFilterPersonCommand ?? (_clearFilterPersonCommand = new RelayCommand<object>(
-                           ClearFilterImplementation)); // , CanSignInExecute
+                           ClearFilterImplementation));
             }
         }
 
@@ -259,61 +256,55 @@ namespace Lab_Pyvovar.View
         private void EditPersonImplementation(Object obj)
         {
             StationManager.DataStorage.RemovePerson(SelectedPerson);
+            if (SelectedPerson == null)
+            {
+                MessageBox.Show("Select a person to edit");
+                return;
+            }
             StationManager.CurrentPerson = SelectedPerson;
             NavigationManager.Instance.Navigate(ViewType.EnterInfo);
         }
 
         private void RemovePersonImplementation(Object obj)
         {
+            if (SelectedPerson == null)
+            {
+                MessageBox.Show("Select a person to remove");
+                return;
+            }
             StationManager.DataStorage.RemovePerson(SelectedPerson);
+            MessageBox.Show("Person was deleted");
             RefreshInfo();
-        }
-
-        private void SaveImplementation(Object obj)
-        {
-            // SerializationManager.Serialize(_people, FileFolderHelper.StorageFilePath);
-            // TODO change here
-            // MessageBox.Show("Changes saved successfully");
         }
 
         private void SortPersonImplementation(Object obj)
         {
-            StationManager.DataStorage.UsersList = Sorting.ToSortBy(Sort);
+            StationManager.DataStorage.Sort(SortValue);
             RefreshInfo();
         }
 
         private void RadioButtonImplementation(Object obj)
         {
-            Enum.TryParse(obj.ToString(), false, out _sort);
-        }
-
-        private void FilterIsAdultSelectedImplementation(Object obj)
-        {
-            FiltrationIsAdult = obj.ToString();
-        }
-
-        private void FilterIsBirthdaySelectedImplementation(Object obj)
-        {
-            FiltrationIsBirthday = obj.ToString();
+            Enum.TryParse(obj.ToString(), false, out _sortValue);
         }
 
         private void FilterImplementation(Object obj)
         {
             CheckCorrectFiltration();
 
-            People = new ObservableCollection<Person>(Filtration.ToFilter(StationManager.DataStorage.UsersList, 
-                FiltrationByFirstName, 
-                FiltrationByLastName, FiltrationByEmail, 
+            People = new ObservableCollection<Person>(Filtration.ToFilter(StationManager.DataStorage.PeopleList, 
+                FiltrationByFirstName, FiltrationByLastName, FiltrationByEmail, 
                 Convert.ToDateTime(FiltrationByBirthdayFrom), 
                 Convert.ToDateTime(FiltrationByBirthdayTo)));
-            if (!String.IsNullOrEmpty(FiltrationIsAdult))
-                People = new ObservableCollection<Person>(Filtration.ToFilterByIsAdult(People.ToList(), FiltrationIsAdult.Equals("Yes")));
-            if (!String.IsNullOrEmpty(FiltrationIsBirthday))
-                People = new ObservableCollection<Person>(Filtration.ToFilterByIsBirthday(People.ToList(), FiltrationIsBirthday.Equals("Yes")));
+            if (SelectedIndexIsAdultFilter != -1)
+                People = new ObservableCollection<Person>(Filtration.ToFilterByIsAdult(People.ToList(), SelectedIndexIsAdultFilter == 1));
+            if (SelectedIndexIsBirthdayFilter != -1)
+                People = new ObservableCollection<Person>(Filtration.ToFilterByIsBirthday(People.ToList(), SelectedIndexIsBirthdayFilter == 1));
             if(!String.IsNullOrEmpty(FiltrationBySunSign))
                 People = new ObservableCollection<Person>(Filtration.ToFilterBySunSign(People.ToList(), FiltrationBySunSign));
             if(!String.IsNullOrEmpty(FiltrationByChineseSign))
                 People = new ObservableCollection<Person>(Filtration.ToFilterByChinese(People.ToList(), FiltrationByChineseSign));
+            
         }
 
         private void CheckCorrectFiltration()
@@ -341,21 +332,47 @@ namespace Lab_Pyvovar.View
             FiltrationByBirthdayTo = null;
             FiltrationBySunSign = "";
             FiltrationByChineseSign = "";
-            FiltrationIsAdult = "";
-            FiltrationIsBirthday = "";
             RefreshInfo();
-
-            
         }
 
         internal InfoViewModel()
         {
-            _people = new ObservableCollection<Person>(StationManager.DataStorage.UsersList);
+            InitButton();
+            _people = new ObservableCollection<Person>(StationManager.DataStorage.PeopleList);
         }
 
         internal void RefreshInfo()
         {
-            People = new ObservableCollection<Person>(StationManager.DataStorage.UsersList);
+            RefreshButtons();
+            People = new ObservableCollection<Person>(StationManager.DataStorage.PeopleList);
+        }
+        
+        private void InitButton()
+        {
+            RadioButton yesIsAdultButton = new RadioButton();
+            yesIsAdultButton.GroupName = "IsAdultFilter";
+            yesIsAdultButton.Content = "Yes";
+            RadioButton noIsAdultButton = new RadioButton();
+            noIsAdultButton.GroupName = "IsAdultFilter";
+            noIsAdultButton.Content = "No";
+
+            RadioButton yesIsBirthdayButton = new RadioButton();
+            yesIsBirthdayButton.GroupName = "IsBirthdayFilter";
+            yesIsBirthdayButton.Content = "Yes";
+            RadioButton noIsBirthdayButton = new RadioButton();
+            noIsBirthdayButton.GroupName = "IsBirthdayFilter";
+            noIsBirthdayButton.Content = "No";
+
+            FiltrationByIsAdultItems = new RadioButton[]{noIsAdultButton, yesIsAdultButton};
+            FiltrationByIsBirthdayItems = new RadioButton[] { noIsBirthdayButton, yesIsBirthdayButton };
+        }
+
+        private void RefreshButtons()
+        {
+            FiltrationByIsAdultItems[0].IsChecked = false;
+            FiltrationByIsAdultItems[1].IsChecked = false;
+            FiltrationByIsBirthdayItems[0].IsChecked = false;
+            FiltrationByIsBirthdayItems[1].IsChecked = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -364,5 +381,6 @@ namespace Lab_Pyvovar.View
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        
     }
 }
