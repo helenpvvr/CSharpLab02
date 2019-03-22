@@ -36,10 +36,10 @@ namespace Lab_Pyvovar.View
         private RelayCommand<object> _addPersonCommand;
         private RelayCommand<object> _editPersonCommand;
         private RelayCommand<object> _removePersonCommand;
-        private RelayCommand<object> _sortCommand;
-        private RelayCommand<object> _radioButtonCommand;
-        private RelayCommand<object> _filterPersonCommand;
-        private RelayCommand<object> _clearFilterPersonCommand;
+        private RelayCommand<object> _sortPeopleCommand;
+        private RelayCommand<object> _initFieldToSortCommand;
+        private RelayCommand<object> _filterPeopleCommand;
+        private RelayCommand<object> _clearFilterCommand;
 
         public ObservableCollection<Person> People
         {
@@ -51,14 +51,11 @@ namespace Lab_Pyvovar.View
             }
         }
         
-        private SortBy SortValue
-        {
-            get { return _sortValue; }
-        }
-        
+        private SortBy SortValue => _sortValue;
+
         public Person SelectedPerson
         {
-            get { return _selectedPerson; }
+            private get { return _selectedPerson; }
             set
             {
                 _selectedPerson = value;
@@ -148,7 +145,7 @@ namespace Lab_Pyvovar.View
 
         public int SelectedIndexIsBirthdayFilter
         {
-            get
+            private get
             {
                 return _selectedIndexIsBirthdayFilter = FiltrationByIsBirthdayItems[1].IsChecked != null && ((bool)FiltrationByIsBirthdayItems[1].IsChecked) ? 1
                     : (FiltrationByIsBirthdayItems[0].IsChecked != null && ((bool)FiltrationByIsBirthdayItems[0].IsChecked) ? 0 : -1);
@@ -172,7 +169,7 @@ namespace Lab_Pyvovar.View
 
         public int SelectedIndexIsAdultFilter
         {
-            get
+            private get
             {
                 return _selectedIndexIsAdultFilter = FiltrationByIsAdultItems[1].IsChecked != null && ((bool)FiltrationByIsAdultItems[1].IsChecked) ? 1
                     : (FiltrationByIsAdultItems[0].IsChecked != null && ((bool)FiltrationByIsAdultItems[0].IsChecked) ? 0 : -1);
@@ -211,38 +208,38 @@ namespace Lab_Pyvovar.View
             }
         }
 
-        public ICommand SortPersonCommand
+        public ICommand SortPeopleCommand
         {
             get
             {
-                return _sortCommand ?? (_sortCommand = new RelayCommand<object>(
-                           SortPersonImplementation));
+                return _sortPeopleCommand ?? (_sortPeopleCommand = new RelayCommand<object>(
+                           SortPeopleImplementation));
             }
         }
 
-        public ICommand RadioButtonCommand
+        public ICommand InitFieldToSortCommandCommand
         {
             get
             {
-                return _radioButtonCommand ?? (_radioButtonCommand = new RelayCommand<object>(
-                           RadioButtonImplementation));
+                return _initFieldToSortCommand ?? (_initFieldToSortCommand = new RelayCommand<object>(
+                           IdentifyFieldToSortImplementation));
             }
         }
 
-        public ICommand FilterPersonCommand
+        public ICommand FilterPeopleCommand
         {
             get
             {
-                return _filterPersonCommand ?? (_filterPersonCommand = new RelayCommand<object>(
+                return _filterPeopleCommand ?? (_filterPeopleCommand = new RelayCommand<object>(
                            FilterImplementation));
             }
         }
 
-        public ICommand ClearFilterPersonCommand
+        public ICommand ClearFilterCommand
         {
             get
             {
-                return _clearFilterPersonCommand ?? (_clearFilterPersonCommand = new RelayCommand<object>(
+                return _clearFilterCommand ?? (_clearFilterCommand = new RelayCommand<object>(
                            ClearFilterImplementation));
             }
         }
@@ -277,13 +274,13 @@ namespace Lab_Pyvovar.View
             RefreshInfo();
         }
 
-        private void SortPersonImplementation(Object obj)
+        private void SortPeopleImplementation(Object obj)
         {
             StationManager.DataStorage.Sort(SortValue);
             RefreshInfo();
         }
 
-        private void RadioButtonImplementation(Object obj)
+        private void IdentifyFieldToSortImplementation(Object obj)
         {
             Enum.TryParse(obj.ToString(), false, out _sortValue);
         }
@@ -349,19 +346,11 @@ namespace Lab_Pyvovar.View
         
         private void InitButton()
         {
-            RadioButton yesIsAdultButton = new RadioButton();
-            yesIsAdultButton.GroupName = "IsAdultFilter";
-            yesIsAdultButton.Content = "Yes";
-            RadioButton noIsAdultButton = new RadioButton();
-            noIsAdultButton.GroupName = "IsAdultFilter";
-            noIsAdultButton.Content = "No";
+            RadioButton yesIsAdultButton = new RadioButton {GroupName = "IsAdultFilter", Content = "Yes"};
+            RadioButton noIsAdultButton = new RadioButton {GroupName = "IsAdultFilter", Content = "No"};
 
-            RadioButton yesIsBirthdayButton = new RadioButton();
-            yesIsBirthdayButton.GroupName = "IsBirthdayFilter";
-            yesIsBirthdayButton.Content = "Yes";
-            RadioButton noIsBirthdayButton = new RadioButton();
-            noIsBirthdayButton.GroupName = "IsBirthdayFilter";
-            noIsBirthdayButton.Content = "No";
+            RadioButton yesIsBirthdayButton = new RadioButton {GroupName = "IsBirthdayFilter", Content = "Yes"};
+            RadioButton noIsBirthdayButton = new RadioButton {GroupName = "IsBirthdayFilter", Content = "No"};
 
             FiltrationByIsAdultItems = new RadioButton[]{noIsAdultButton, yesIsAdultButton};
             FiltrationByIsBirthdayItems = new RadioButton[] { noIsBirthdayButton, yesIsBirthdayButton };

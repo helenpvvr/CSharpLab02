@@ -16,18 +16,18 @@
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
-            <Expander Header="Sortinging" Grid.Row="0" Grid.Column="0" Margin="10">
+            <Expander Header="Sorting" Grid.Row="0" Grid.Column="0" Margin="10">
                 <StackPanel>
-                    <TextBlock Margin="5">Sortinged by...</TextBlock>
-                    <RadioButton GroupName="SortingInfo" Content="First Name" Command="{Binding RadioButtonCommand}" CommandParameter="SortingByFirstName"/>
-                    <RadioButton GroupName="SortingInfo" Content="Last Name" Command="{Binding RadioButtonCommand}" CommandParameter="SortingByLastName"/>
-                    <RadioButton GroupName="SortingInfo" Content="Email" Command="{Binding RadioButtonCommand}" CommandParameter="SortingByEmail"/>
-                    <RadioButton GroupName="SortingInfo" Content="Birthday" Command="{Binding RadioButtonCommand}" CommandParameter="SortingByBirthday"/>
-                    <RadioButton GroupName="SortingInfo" Content="Is Adult" Command="{Binding RadioButtonCommand}" CommandParameter="SortingByIsAdult"/>
-                    <RadioButton GroupName="SortingInfo" Content="Sun Sing" Command="{Binding RadioButtonCommand}" CommandParameter="SortingBySunSign"/>
-                    <RadioButton GroupName="SortingInfo" Content="Chinese Sing" Command="{Binding RadioButtonCommand}" CommandParameter="SortingByChineseSign"/>
-                    <RadioButton GroupName="SortingInfo" Content="Is Birthday" Command="{Binding RadioButtonCommand}" CommandParameter="SortingByIsBirthday"/>
-                    <Button Content="Sorting" Command="{Binding SortPersonCommand}" Margin="20, 10, 20, 10"/>
+                    <TextBlock Margin="5">Sorted by...</TextBlock>
+                    <RadioButton GroupName="SortingInfo" Content="First Name" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingByFirstName"/>
+                    <RadioButton GroupName="SortingInfo" Content="Last Name" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingByLastName"/>
+                    <RadioButton GroupName="SortingInfo" Content="Email" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingByEmail"/>
+                    <RadioButton GroupName="SortingInfo" Content="Birthday" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingByBirthday"/>
+                    <RadioButton GroupName="SortingInfo" Content="Is Adult" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingByIsAdult"/>
+                    <RadioButton GroupName="SortingInfo" Content="Sun Sing" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingBySunSign"/>
+                    <RadioButton GroupName="SortingInfo" Content="Chinese Sing" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingByChineseSign"/>
+                    <RadioButton GroupName="SortingInfo" Content="Is Birthday" Command="{Binding InitFieldToSortCommandCommand}" CommandParameter="SortingByIsBirthday"/>
+                    <Button Content="Sorting" Command="{Binding SortPeopleCommand}" Margin="20, 10, 20, 10"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Filtration" Grid.Row="0" Grid.Column="1" Margin="10">
@@ -72,11 +72,11 @@
                     </Expander>
                     <Expander Header="Filtration By IsBirthday" Margin="20, 0, 0, 0">
                         <StackPanel Margin="10, 0, 0, 0">
-                            <ListBox ItemsSource="{Binding FiltrationByIsBirthdayItems}" SelectedIndex="{Binding SelectedIndexIsBirthdayFilter, Mode=TwoWay}"></ListBox>
+                            <ListBox ItemsSource="{Binding FiltrationByIsBirthdayItems}" SelectedIndex="{Binding SelectedIndexIsBirthdayFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBox>
                         </StackPanel>
                     </Expander>
-                    <Button Content="Filter" Command="{Binding FilterPersonCommand}" Margin="30, 5, 30, 5"/>
-                    <Button Content="Clear" Command="{Binding ClearFilterPersonCommand}" Margin="30, 5, 30, 10"/>
+                    <Button Content="Filter" Command="{Binding FilterPeopleCommand}" Margin="30, 5, 30, 5"/>
+                    <Button Content="Clear" Command="{Binding ClearFilterCommand}" Margin="30, 5, 30, 10"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Edit list" Grid.Row="0" Grid.Column="2" Margin="10">
